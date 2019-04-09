@@ -62,12 +62,18 @@ int main() {
 
     while(1) {
 	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-        _CP0_SET_COUNT(0);
-        if (_CP0_GET_COUNT()>=24000)
-        {   LATAbits.LATA4=(LATAbits.LATA4)!;
-        }
+        delay(24000);
+        LATAbits.LATA4=(LATAbits.LATA4)!;
+        
         while(!PORTBbits.RB4){
         }
 	// remember the core timer runs at half the sysclk
+    }
+}
+
+void delay(int time) {
+    _CP0_SET_COUNT(0);
+    while (_CP0_GET_COUNT()<time){
+        ;
     }
 }
