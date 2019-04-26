@@ -1,3 +1,4 @@
+#include "i2c_master_noint.h"
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
 
@@ -36,11 +37,11 @@
 #pragma config FUSBIDIO = ON // USB pins controlled by USB module
 #pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
 
-
 int main() {
 
     __builtin_disable_interrupts();
 
+    TRISBbits.TRISB15=0;
     // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
     __builtin_mtc0(_CP0_CONFIG, _CP0_CONFIG_SELECT, 0xa4210583);
 
@@ -57,20 +58,27 @@ int main() {
     TRISAbits.TRISA4= 0;
     TRISBbits.TRISB4= 1;
     LATAbits.LATA4= 0;
-    
+    initExpander();
+    LATAbits.LATA4= 0;
     __builtin_enable_interrupts();
-
-    while(1) {
-	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-        _CP0_SET_COUNT(0);
-        while (_CP0_GET_COUNT()<48000000){
-            ;
+    setExpander(0b00001110);
+    
+    while(1){
+         _CP0_SET_COUNT(0);
+        while (_CP0_GET_COUNT()<4800000){
+            unsigned char r= getExpander();
+            char button= (r>>7);
+            while(!button){
+                setExpander(0b00001111);
+                
+                r= getExpander();
+                button= (r>>7) & 0b1;
+                
+                if (button==1){
+                    setExpander(0b00001110);
+                }
+            }
         }
         LATAbits.LATA4=!LATAbits.LATA4;
-        
-        while(!PORTBbits.RB4){
-            ;
-        }
-	// remember the core timer runs at half the sysclk
     }
 }
