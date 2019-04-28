@@ -68,14 +68,28 @@ int main() {
     LCD_clearScreen(0xf800);
     while(1){
         char m[20];
-        sprintf(m,"Banans are the best");
-        LCD_print(m,10,20,0x0000,0xf800);
-        LATAbits.LATA4= !LATAbits.LATA4;
-        //LCD_draw_letter(10,10,20,0x0000,0xf800);
-        //LCD_draw_letter(11,15,20,0x0000,0xf800);
-        while(1){
+        _CP0_SET_COUNT(0);
+        int jj,ii=0;
+        LCD_draw_letter(0x7c-0x20,27,87,0x0000,0xf800);
+        LCD_draw_letter(0x7c-0x20,127,87,0x0000,0xf800);
+
+        for (jj=0;jj<101;jj++){
+            LCD_drawPixel(29+jj,79,0x0000);
+            LCD_drawPixel(29+jj,86,0x0000);
+
+        }
+        
+        while(_CP0_GET_COUNT()<240000){
             ;
         }
+            sprintf(m,"Hello world %d!");
+            LCD_print(m,28,40,0x0000,0xf800);
+            
+            LATAbits.LATA4= !LATAbits.LATA4;
+            //LCD_draw_letter(10,10,20,0x0000,0xf800);
+            //LCD_draw_letter(11,15,20,0x0000,0xf800);
+        
+        
     }
     
 }
