@@ -1,6 +1,7 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
-#include"ili9341.h"    
+#include"ili9341.h"
+#include<stdio.h> 
 
 // DEVCFG0
 #pragma config DEBUG = OFF // no debugging
@@ -60,28 +61,34 @@ int main() {
     LATAbits.LATA4= 0;
     SPI1_init();
     LCD_init();   
-    LATAbits.LATA4= 1;
+    //LATAbits.LATA4= 1;
     
     __builtin_enable_interrupts();
     
-    unsigned short ii= 0;
     LCD_clearScreen(0xf800);
     while(1){
-        LCD_draw_letter(0x11,100,10,0x0000,0xf800);
-        LCD_drawPixel(10,10,0x0000);
-        LCD_drawPixel(10,11,0x0000);
-        LCD_drawPixel(10,12,0x0000);
-        LCD_drawPixel(10,13,0x0000);
-
-
+        char m[20];
+        sprintf(m,"Banans are the best");
+        LCD_print(m,10,20,0x0000,0xf800);
+        LATAbits.LATA4= !LATAbits.LATA4;
+        //LCD_draw_letter(10,10,20,0x0000,0xf800);
+        //LCD_draw_letter(11,15,20,0x0000,0xf800);
+        while(1){
+            ;
+        }
     }
     
 }
 
-void LCD_print(char* m, short x, short y, short font, short bg){
+void LCD_print(char* mes, short x, short y, short font, short bg){
+    //char mes[2];
+    //mes[0]= 40;
+    //mes[1]= 31;
+    //mes[2]=0;
+    
     int t=0;
-    while(m[t]){
-        LCD_draw_letter(m[t],x+5*t,y,font,bg);
+    while(mes[t]){
+        LCD_draw_letter(mes[t]-0x20,x+5*t,y,font,bg);
         t++;
     }
 }
@@ -96,11 +103,11 @@ void LCD_draw_letter(char letter, short x, short y, short font, short bg){
             char BIT= (col>>(7-j))&0b1;
             
             if(BIT==1){
-                LCD_drawPixel(x+i,y+j,font);
+                LCD_drawPixel(x+i,y-j,font);
             }
             
             else{
-                LCD_drawPixel(x+i,y+j,bg);
+                LCD_drawPixel(x+i,y-j,bg);
 
             }
         }
