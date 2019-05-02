@@ -66,30 +66,47 @@ int main() {
     __builtin_enable_interrupts();
     
     LCD_clearScreen(0xf800);
-    while(1){
-        char m[20];
+    LCD_draw_letter(0x7c-0x20,27,87,0x0000,0xf800);
+    LCD_draw_letter(0x7c-0x20,127,87,0x0000,0xf800);
+    int jj,ii=0;
+    char m[20];
+    int ticks, count=0;
+    while(1){    
         _CP0_SET_COUNT(0);
-        int jj,ii=0;
-        LCD_draw_letter(0x7c-0x20,27,87,0x0000,0xf800);
-        LCD_draw_letter(0x7c-0x20,127,87,0x0000,0xf800);
-
+   
         for (jj=0;jj<101;jj++){
-            LCD_drawPixel(29+jj,79,0x0000);
+            LCD_drawPixel(29+jj,79,0x0000);     //200 pixels
             LCD_drawPixel(29+jj,86,0x0000);
-
         }
         
         while(_CP0_GET_COUNT()<240000){
             ;
         }
-            sprintf(m,"Hello world %d!");
-            LCD_print(m,28,40,0x0000,0xf800);
-            
-            LATAbits.LATA4= !LATAbits.LATA4;
+        ii++;
+        for(jj=0;jj<6;jj++){
+            LCD_drawPixel(29+ii,79+jj,0x0000);  // five pixels
+
+        }
+            sprintf(m,"Hello world %d!",ii);        //25 pixels per letter, 15 letters
+            LCD_print(m,28,40,0x0000,0xf800);       // 25*15= 375 pixels
+            if(ii==100){
+                
+                for(ii=0;ii<100;ii++){
+                    for(jj=0;jj<6;jj++){
+                        LCD_drawPixel(29+ii,79+jj,0xf800);      //500 pixels*1 in every 100 loops
+                    }                                           // 5 pixels
+                }
+                ii=0;
+            }
+            LATAbits.LATA4= !LATAbits.LATA4;                // total= 785 pixels per loop
             //LCD_draw_letter(10,10,20,0x0000,0xf800);
             //LCD_draw_letter(11,15,20,0x0000,0xf800);
         
-        
+            ticks= _CP0_GET_COUNT();
+            count= 785*24000000/ticks;
+          
+            sprintf(m,"%d fps",count);
+            LCD_print(m,28, 60,0x0000,0xf800);          // 200 pixels
     }
     
 }
