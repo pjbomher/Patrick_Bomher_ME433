@@ -101,7 +101,7 @@ void imu_init() {
      b= 0b11010110;
     i2c_master_send(b);
     i2c_master_send(0x11); 
-    i2c_master_send(0b10001010);
+    i2c_master_send(0b10001000);
     i2c_master_stop();
     
     i2c_master_start();

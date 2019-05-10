@@ -6,7 +6,7 @@
 #define CS LATBbits.LATB7
 
 void I2C_read_multiple(unsigned char address, unsigned char reg, unsigned char * data, int length);
-signed short make_int(char datasmall, char databig);
+signed short make_int(unsigned char datasmall, unsigned char databig);
 void WHOAMI(char * data);
 
 // DEVCFG0
@@ -74,7 +74,7 @@ int main() {
     
     LCD_clearScreen(0xf800);
     
-    signed short m[14];
+    unsigned char m[100];
     char mes[100];
     signed short temp,gx,gy,gz,wx,wy,wz;
            // LATAbits.LATA4= 0;
@@ -106,13 +106,20 @@ int main() {
             ;}
     }
     __builtin_enable_interrupts();
+    unsigned short kk;
+    for(kk=0;kk<240;kk++){
+        LCD_drawPixel(kk,200,0xf800);
+        LCD_drawPixel(120,80+kk,0xf800);
+        LCD_drawPixel(120,200,0xffff);
+    }
+    
     while(1){
         //LATAbits.LATA4= !LATAbits.LATA4;
         _CP0_SET_COUNT(0);
         while(_CP0_GET_COUNT()<12000){
             //LATAbits.LATA4= 1;
         }
-        I2C_read_multiple(0,0x20,m,100);
+        I2C_read_multiple(0,0x20,m,14);
         temp= make_int(m[0],m[1]);
         wx= make_int(m[2],m[3]);
         wy= make_int(m[4],m[5]);
@@ -129,12 +136,50 @@ int main() {
         LCD_print(mes,10,32,0x0000,0xf800);
         sprintf(mes,"Angular velocity in z:  %d",wz);
         LCD_print(mes,10,42,0x0000,0xf800);
-        sprintf(mes,"Gx:  %d",gx);
+        sprintf(mes,"Gx:  %d",gx/100);
         LCD_print(mes,10,52,0x0000,0xf800);
-        sprintf(mes,"Gy:  %d",gy);
+        sprintf(mes,"Gy:  %d",gy/100);
         LCD_print(mes,10,62,0x0000,0xf800);
-        sprintf(mes,"Gz:  %d",gz);
+        sprintf(mes,"Gz:  %d",gz/100);
         LCD_print(mes,10,72,0x0000,0xf800);
+        
+        for(kk=0;kk<120;kk++){
+            if(gx>0 && kk<=(gx/100)){
+                LCD_drawPixel(120+kk,200,0xffff);
+                LCD_drawPixel(120-kk,200,0xf800);
+            }
+            if(gx>0 &&kk>(gx/100)){
+                LCD_drawPixel(120+kk,200,0xf800);
+                LCD_drawPixel(120-kk,200,0xf800);
+            }
+            if(gx<0 && kk<=(-gx/100)){
+                LCD_drawPixel(120-kk,200,0xffff); 
+                LCD_drawPixel(120+kk,200,0xf800);
+                }
+            if(gx<0 && kk >(-gx/100)){
+                LCD_drawPixel(120-kk,200,0xf800);
+                LCD_drawPixel(120+kk,200,0xf800);
+                }   
+            
+            //test y now
+            
+            if(gy>0 && kk<(gy/100)){
+                LCD_drawPixel(120,200+kk,0xffff);
+                LCD_drawPixel(120,200-kk,0xf800);
+            }
+            if(gy>0 &&kk>(gy/100)){
+                LCD_drawPixel(120,200+kk,0xf800);
+                LCD_drawPixel(120,200-kk,0xf800);
+            }
+            if(gy<0 && kk<=(-gy/100)){
+                LCD_drawPixel(120,200-kk,0xffff); 
+                LCD_drawPixel(120,200+kk,0xf800);
+                }
+            if(gy<0 && kk >(-gy/100)){
+                LCD_drawPixel(120,200-kk,0xf800);
+                LCD_drawPixel(120,200+kk,0xf800);
+            }
+        }
     }
 }
 
@@ -153,13 +198,11 @@ void I2C_read_multiple(unsigned char address, unsigned char reg, unsigned char *
         else {i2c_master_ack(0);} 
         
     }
-            
-
     i2c_master_stop();
 }
 
-signed short make_int(char datasmall, char databig){
-    signed short output= (databig<<8)|datasmall;
+signed short make_int(unsigned char datasmall, unsigned char databig){
+    signed short output= (databig<<8)| datasmall;
     return output;
 }
 
