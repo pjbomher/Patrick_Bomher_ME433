@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ili9341_2.c LCD_2.c
+SOURCEFILES_QUOTED_IF_SPACED=ili9341.c LCD.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ili9341_2.o ${OBJECTDIR}/LCD_2.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ili9341_2.o.d ${OBJECTDIR}/LCD_2.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ili9341.o ${OBJECTDIR}/LCD.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ili9341.o.d ${OBJECTDIR}/LCD.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ili9341_2.o ${OBJECTDIR}/LCD_2.o
+OBJECTFILES=${OBJECTDIR}/ili9341.o ${OBJECTDIR}/LCD.o
 
 # Source Files
-SOURCEFILES=ili9341_2.c LCD_2.c
+SOURCEFILES=ili9341.c LCD.c
 
 
 CFLAGS=
@@ -106,30 +106,30 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/ili9341_2.o: ili9341_2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/ili9341.o: ili9341.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ili9341_2.o.d 
-	@${RM} ${OBJECTDIR}/ili9341_2.o 
-	@${FIXDEPS} "${OBJECTDIR}/ili9341_2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG   -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/ili9341_2.o.d" -o ${OBJECTDIR}/ili9341_2.o ili9341_2.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	@${RM} ${OBJECTDIR}/ili9341.o.d 
+	@${RM} ${OBJECTDIR}/ili9341.o 
+	@${FIXDEPS} "${OBJECTDIR}/ili9341.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG   -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/ili9341.o.d" -o ${OBJECTDIR}/ili9341.o ili9341.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/LCD_2.o: LCD_2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/LCD.o: LCD.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/LCD_2.o.d 
-	@${RM} ${OBJECTDIR}/LCD_2.o 
-	@${FIXDEPS} "${OBJECTDIR}/LCD_2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG   -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/LCD_2.o.d" -o ${OBJECTDIR}/LCD_2.o LCD_2.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	@${RM} ${OBJECTDIR}/LCD.o.d 
+	@${RM} ${OBJECTDIR}/LCD.o 
+	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG   -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/LCD.o.d" -o ${OBJECTDIR}/LCD.o LCD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 else
-${OBJECTDIR}/ili9341_2.o: ili9341_2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/ili9341.o: ili9341.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ili9341_2.o.d 
-	@${RM} ${OBJECTDIR}/ili9341_2.o 
-	@${FIXDEPS} "${OBJECTDIR}/ili9341_2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/ili9341_2.o.d" -o ${OBJECTDIR}/ili9341_2.o ili9341_2.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	@${RM} ${OBJECTDIR}/ili9341.o.d 
+	@${RM} ${OBJECTDIR}/ili9341.o 
+	@${FIXDEPS} "${OBJECTDIR}/ili9341.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/ili9341.o.d" -o ${OBJECTDIR}/ili9341.o ili9341.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/LCD_2.o: LCD_2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/LCD.o: LCD.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/LCD_2.o.d 
-	@${RM} ${OBJECTDIR}/LCD_2.o 
-	@${FIXDEPS} "${OBJECTDIR}/LCD_2.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/LCD_2.o.d" -o ${OBJECTDIR}/LCD_2.o LCD_2.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	@${RM} ${OBJECTDIR}/LCD.o.d 
+	@${RM} ${OBJECTDIR}/LCD.o 
+	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/LCD.o.d" -o ${OBJECTDIR}/LCD.o LCD.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 
