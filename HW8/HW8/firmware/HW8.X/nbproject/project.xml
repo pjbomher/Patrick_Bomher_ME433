@@ -18,6 +18,10 @@
                 <sourceRootElem>../../../../../microchip/harmony/v2_05</sourceRootElem>
                 <sourceRootElem>../src/plzwork3</sourceRootElem>
                 <sourceRootElem>../src/system_config/plzwork3</sourceRootElem>
+                <sourceRootElem>../../../../HW7/HW7.X</sourceRootElem>
+                <sourceRootElem>../../../../HW6/HW6.X</sourceRootElem>
+                <sourceRootElem>../../../../HW5/HW5.X</sourceRootElem>
+                <sourceRootElem>../../../../HW4/HW4.X</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

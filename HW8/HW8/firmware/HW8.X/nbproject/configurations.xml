@@ -22,6 +22,9 @@
           </logicalFolder>
         </logicalFolder>
         <itemPath>../src/app.h</itemPath>
+        <itemPath>/Users/patrickbomher/Documents/GitHub/Patrick_Bomher_ME433/HW8/HW8/firmware/HW8.X/i2c_master_noint.h</itemPath>
+        <itemPath>/Users/patrickbomher/Documents/GitHub/Patrick_Bomher_ME433/HW8/HW8/firmware/HW8.X/ili9341.h</itemPath>
+        <itemPath>/Users/patrickbomher/Documents/GitHub/Patrick_Bomher_ME433/HW8/HW8/firmware/HW8.X/spi.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="framework" projectFiles="true">
         <logicalFolder name="f1" displayName="osal" projectFiles="true">
@@ -97,6 +100,9 @@
         </logicalFolder>
         <itemPath>../src/app.c</itemPath>
         <itemPath>../src/main.c</itemPath>
+        <itemPath>/Users/patrickbomher/Documents/GitHub/Patrick_Bomher_ME433/HW8/HW8/firmware/HW8.X/spi.c</itemPath>
+        <itemPath>/Users/patrickbomher/Documents/GitHub/Patrick_Bomher_ME433/HW8/HW8/firmware/HW8.X/i2c_master_noint.c</itemPath>
+        <itemPath>/Users/patrickbomher/Documents/GitHub/Patrick_Bomher_ME433/HW8/HW8/firmware/HW8.X/ili9341_2.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="framework" projectFiles="true">
         <logicalFolder name="f1" displayName="system" projectFiles="true">
@@ -119,6 +125,10 @@
     <Elem>../../../../../microchip/harmony/v2_05</Elem>
     <Elem>../src/plzwork3</Elem>
     <Elem>../src/system_config/plzwork3</Elem>
+    <Elem>../../../../HW7/HW7.X</Elem>
+    <Elem>../../../../HW6/HW6.X</Elem>
+    <Elem>../../../../HW5/HW5.X</Elem>
+    <Elem>../../../../HW4/HW4.X</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -130,8 +140,8 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>snap</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>1.42</languageToolchainVersion>
-        <platform>3</platform>
+        <languageToolchainVersion>2.15</languageToolchainVersion>
+        <platform>4</platform>
       </toolsSet>
       <packs>
         <pack name="PIC32MX_DFP" vendor="Microchip" version="1.0.28"/>
@@ -315,6 +325,9 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </PICkit3PlatformTool>
+      <snap>
+        <property key="memories.programmemory.ranges" value="1d000000-1d01ffff"/>
+      </snap>
     </conf>
   </confs>
 </configurationDescriptor>
