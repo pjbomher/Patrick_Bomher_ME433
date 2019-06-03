@@ -62,7 +62,7 @@ unsigned char m[100];
 
 uint8_t APP_MAKE_BUFFER_DMA_READY dataOut[APP_READ_BUFFER_SIZE];
 uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
-int len, i = 0, r=0;
+signed int len, i = 0, r=0, MAF[2], FIR[6],jj,MAFout,FIRout,IIRout=0;
 int startTime = 0; // to remember the loop time
 
 // *****************************************************************************
@@ -509,14 +509,35 @@ void APP_Tasks(void) {
            
         I2C_read_multiple(0,0x20,m,14);
         temp= make_int(m[0],m[1]);
-        wx= make_int(m[2],m[3]);
-        wy= make_int(m[4],m[5]);
-        wz= make_int(m[6],m[7]);
-        gx= make_int(m[8],m[9]);
-        gy= make_int(m[10],m[11]);
+        //wx= make_int(m[2],m[3]);
+        //wy= make_int(m[4],m[5]);
+        //wz= make_int(m[6],m[7]);
+        //gx= make_int(m[8],m[9]);
+        //gy= make_int(m[10],m[11]);
         gz= make_int(m[12],m[13]);
         
-        len= sprintf(dataOut, "%d \t %d \t %d \t %d \t %d \t %d \t %d \t\r\n",i,gx,gy,gz,wx,wy,wz);
+        //for(jj=0;jj<3;jj++){
+            MAF[0]=MAF[1];
+            MAF[1]=MAF[2];
+            MAF[2]=gz;
+            MAFout=(MAF[2]+MAF[1]+MAF[0])/3;
+        //}
+        
+        //for(jj=0;jj<7;jj++){
+            FIR[0]=FIR[1]*(.0212/.0897);
+            FIR[1]=FIR[2]*(.0897/.2343);
+            FIR[2]=FIR[3]*(.2343/.3094);
+            FIR[3]=FIR[4]*(.3094/.2343);
+            FIR[4]=FIR[5]*(.2343/.0897);            
+            FIR[5]=FIR[6]*(.0897/.0212);
+            FIR[6]=gz*.0212;
+            FIRout=(FIR[0]+FIR[1]+FIR[2]+FIR[3]+FIR[4]+FIR[5]+FIR[6])/7;
+        //}
+        
+        IIRout=(gz*.05)+.95*IIRout;
+        
+        
+        len= sprintf(dataOut, "%d \t %d \t %d \t %d \t %d \t",i,gz,MAFout,FIRout,IIRout);
             //len = sprintf(dataOut, "%d\r\n", i);
             i++; // increment the index so we see a change in the text
             /* IF A LETTER WAS RECEIVED, ECHO IT BACK SO THE USER CAN SEE IT */
