@@ -62,7 +62,7 @@ unsigned char m[100];
 
 uint8_t APP_MAKE_BUFFER_DMA_READY dataOut[APP_READ_BUFFER_SIZE];
 uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
-int len, i = 0;
+int len, i = 0, r=0;
 int startTime = 0; // to remember the loop time
 
 // *****************************************************************************
@@ -454,6 +454,10 @@ void APP_Tasks(void) {
                         /* YOU COULD PUT AN IF STATEMENT HERE TO DETERMINE WHICH LETTER
                         WAS RECEIVED (USUALLY IT IS THE NULL CHARACTER BECAUSE NOTHING WAS
                       TYPED) */
+                        
+                if(appData.readBuffer[0]=='r'){
+                    r=1;
+                }
 
                 if (appData.readTransferHandle == USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID) {
                     appData.state = APP_STATE_ERROR;
@@ -474,10 +478,14 @@ void APP_Tasks(void) {
              * The isReadComplete flag gets updated in the CDC event handler. */
 
              /* WAIT FOR 5HZ TO PASS OR UNTIL A LETTER IS RECEIVED */
-            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 100)) {
+            if (appData.isReadComplete || (_CP0_GET_COUNT() - startTime > (48000000 / 2 / 100) && i<100 && r==1)) {
                 appData.state = APP_STATE_SCHEDULE_WRITE;
             }
-
+            
+            if(i==100){
+                i=0;
+                r=0;
+            }
 
             break;
 
@@ -501,14 +509,14 @@ void APP_Tasks(void) {
            
         I2C_read_multiple(0,0x20,m,14);
         temp= make_int(m[0],m[1]);
-        //wx= make_int(m[2],m[3]);
-        //wy= make_int(m[4],m[5]);
-        //wz= make_int(m[6],m[7]);
+        wx= make_int(m[2],m[3]);
+        wy= make_int(m[4],m[5]);
+        wz= make_int(m[6],m[7]);
         gx= make_int(m[8],m[9]);
         gy= make_int(m[10],m[11]);
         gz= make_int(m[12],m[13]);
         
-        len= sprintf(dataOut, "Accel x: %d     \tAccel y: %d     \tAccel z: %d     \r\n",gx,gy,gz);
+        len= sprintf(dataOut, "%d \t %d \t %d \t %d \t %d \t %d \t %d \t\r\n",i,gx,gy,gz,wx,wy,wz);
             //len = sprintf(dataOut, "%d\r\n", i);
             i++; // increment the index so we see a change in the text
             /* IF A LETTER WAS RECEIVED, ECHO IT BACK SO THE USER CAN SEE IT */
