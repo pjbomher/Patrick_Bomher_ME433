@@ -49,7 +49,15 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 #include "app.h"
+#include <stdio.h>
+#include <xc.h>
+#include <math.h>
 
+unsigned char m[100];
+    char mes[100];
+    signed short temp,gx,gy,gz,wx,wy,wz;
+int len, i = 0, r=0;
+int8_t MAFx[2], MAFy[2], FIRx[6], FIRy[6], FIRyout,FIRxout, MAFxout,MAFyout,IIRxout,IIRyout;
 
 // *****************************************************************************
 // *****************************************************************************
@@ -255,6 +263,65 @@ void APP_Initialize(void) {
     //appData.emulateMouse = true;
     appData.hidInstance = 0;
     appData.isMouseReportSendBusy = false;
+    
+    
+    /* INITIALIZATIONS HERe*/
+    __builtin_disable_interrupts();
+
+    TRISBbits.TRISB15=0;
+    // set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
+    __builtin_mtc0(_CP0_CONFIG, _CP0_CONFIG_SELECT, 0xa4210583);
+
+    // 0 data RAM access wait states
+    BMXCONbits.BMXWSDRM = 0x0;
+
+    // enable multi vector interrupts
+    INTCONbits.MVEC = 0x1;
+
+    // disable JTAG to get pins back
+    DDPCONbits.JTAGEN = 0;
+
+    // do your TRIS and LAT commands here
+    
+    TRISAbits.TRISA4= 0;
+    TRISBbits.TRISB4= 1;
+    LATAbits.LATA4= 0;
+    
+    i2c_master_setup();
+    //SPI1_init();
+    //LCD_init();
+    imu_init();
+    
+    
+    
+           // LATAbits.LATA4= 0;
+    
+    //WHOAMI
+    i2c_master_start();
+    char b= 0b11010110;
+    i2c_master_send(b);
+    i2c_master_send(0x0f);
+    i2c_master_restart();
+    b= 0b11010111;
+    i2c_master_send(b);
+    char r=i2c_master_recv();
+    i2c_master_ack(1);
+    i2c_master_stop();
+
+    
+    
+    //I2C_read_multiple(0,0x0f,m,1);
+            LATAbits.LATA4= 1;
+
+    if(r==0b01101001){
+        //LATAbits.LATA4= 1;
+    }
+    else{
+        //LATAbits.LATA4= 1;
+        while(1){
+            ;}
+    }
+    __builtin_enable_interrupts();
 }
 
 /******************************************************************************
@@ -265,7 +332,7 @@ void APP_Initialize(void) {
  */
 
 void APP_Tasks(void) {
-    //static int8_t vector = 0;
+    static int8_t vector = 0;
     //static uint8_t movement_length = 0;
     //int8_t dir_table[] = {-4, -4, -4, 0, 4, 4, 4, 0};
 
@@ -304,13 +371,34 @@ void APP_Tasks(void) {
 
         case APP_STATE_MOUSE_EMULATE:
             
+            
             // every 50th loop, or 20 times per second
             //if (movement_length > 50) {
                 appData.mouseButton[0] = MOUSE_BUTTON_STATE_RELEASED;
                 appData.mouseButton[1] = MOUSE_BUTTON_STATE_RELEASED;
-                appData.xCoordinate = (int8_t) 1; //dir_table[vector & 0x07];
-                appData.yCoordinate = (int8_t) 1; //dir_table[(vector + 2) & 0x07];
-                //vector++;
+                
+                if(((vector&0x0f)<9)){
+                    appData.xCoordinate = (int8_t) 0; //dir_table[vector & 0x07];
+                    appData.yCoordinate = (int8_t) 0; //dir_table[(vector + 2) & 0x07];
+                    vector++;
+                }
+                else{
+                    I2C_read_multiple(0,0x20,m,14);
+                temp= make_int(m[0],m[1]);
+                //wx= make_int(m[2],m[3]);
+                //wy= make_int(m[4],m[5]);
+                //wz= make_int(m[6],m[7]);
+                gx= make_int(m[8],m[9]);
+                gy= make_int(m[10],m[11]);
+                //gz= make_int(m[12],m[13]);
+
+                
+                    appData.xCoordinate = (int32_t) gx/1000; //dir_table[vector & 0x07];
+                    appData.yCoordinate = (int32_t) gy/1000; //dir_table[(vector + 2) & 0x07];
+                }
+                /*if(vector==9){
+                    vector=0;
+                }*/
                 //movement_length = 0;
             //}
 
