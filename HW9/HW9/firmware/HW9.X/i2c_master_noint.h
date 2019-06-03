@@ -15,7 +15,4 @@ void initExpander(void);
 void setExpander(char level);
 unsigned char getExpander();
 void imu_init();
-void I2C_read_multiple(unsigned char address, unsigned char reg, unsigned char * data, int length);
-signed short make_int(unsigned char datasmall, unsigned char databig);
-void WHOAMI(char * data);
 #endif
