@@ -215,4 +215,6 @@ void LCD_print(char* m, short x, short y, short font, short bg);
 void I2C_read_multiple(unsigned char address, unsigned char reg, unsigned char * data, int length);
 signed short make_int(unsigned char datasmall, unsigned char databig);
 void WHOAMI(char * data);
+
+void eight_array(unsigned char* array, signed short height);
 #endif

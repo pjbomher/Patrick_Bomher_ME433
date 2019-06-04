@@ -55,6 +55,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 #include <xc.h>
+#include <stdio.h>
 #include "../HW15.X/ili9341.h"
 
 #define PHASE LATBbits.LATB13   
@@ -96,7 +97,9 @@ APP_DATA appData;
 // Section: Application Local Functions
 // *****************************************************************************
 // *****************************************************************************
-
+unsigned char array[240];
+char m[100];
+unsigned short k,j;
 int i=0;
 /* TODO:  Add any necessary local functions.
 */
@@ -145,6 +148,13 @@ void APP_Initialize ( void )
      */
     
            __builtin_disable_interrupts();
+           
+           for(j=0;j<=240;j++){
+               //array[j]= (-(j^2)+240*j)/200;
+               array[j]= j;
+           }
+           
+           
    
 // INITIALIZE LCD
     // do your TRIS and LAT commands here
@@ -160,6 +170,18 @@ void APP_Initialize ( void )
     
     LCD_clearScreen(0xf800);
     
+    sprintf(m,"Red:");
+    LCD_print(m,10,10,0x0000,0xf800);
+    sprintf(m,"Green:");
+    LCD_print(m,10,50,0x0000,0xf800);
+    sprintf(m,"Blue:");
+    LCD_print(m,10,90,0x0000,0xf800);
+    sprintf(m,"Prints 3 MSBs of each data point in the array.");
+    LCD_print(m,10,120,0x0000,0xf800);
+    
+    eight_array(array,20);
+    eight_array(array,60);
+    eight_array(array,100);
     
     //INITIALIZE INTERRUPTS
     IPC3bits.T3IP= 5;	//setup time 3 interrupt
@@ -238,6 +260,9 @@ void APP_Tasks ( void )
         }
     }
 }
+
+
+
 
  
 

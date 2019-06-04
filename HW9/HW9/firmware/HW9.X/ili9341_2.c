@@ -337,3 +337,15 @@ void WHOAMI(char * data){
     i2c_master_stop();
 }
 
+
+void eight_array(unsigned char* array){
+    char temp;
+    unsigned short k,j;
+    for(j=0;j<=240;j++){
+        temp= (array[j])>>5;
+        for(k=0;k<temp;k++){
+            LCD_drawPixel(j,20-k,0x0000);
+        }
+    }
+}
+

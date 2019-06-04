@@ -337,3 +337,13 @@ void WHOAMI(char * data){
     i2c_master_stop();
 }
 
+void eight_array(unsigned char* array, signed short height){
+    char temp;
+    unsigned short k,j;
+    for(j=0;j<=240;j++){
+        temp= (array[j])>>5;        //use only three MSBs
+        for(k=0;k<temp;k++){
+            LCD_drawPixel(j,height-k,0x0000);       //base height of height
+        }
+    }
+}
